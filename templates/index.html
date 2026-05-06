@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>X-Discovery AI | Mühendislik Analiz Terminali</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --accent: #ffd700; 
+            --bg: #0a0a0a; 
+            --card: #141414; 
+            --border: #222; 
+        }
+
+        body { 
+            background: var(--bg); 
+            color: #ccc; 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            font-size: 13px; 
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+
+        /* SAYAÇ PANELİ */
+        .stats-bar { 
+            display: flex; 
+            justify-content: center; 
+            gap: 40px; 
+            background: #1a1a1a; 
+            padding: 15px; 
+            border-radius: 12px; 
+            margin-bottom: 25px; 
+            border: 1px solid var(--border); 
+        }
+
+        .stat-item b { 
+            color: var(--accent); 
+            font-size: 1rem; 
+            font-family: 'Fira Code'; 
+        }
+
+        /* TEKNİK AÇIKLAMA BÖLÜMÜ - GÜNCELLENDİ */
+        .vision-box { 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin-bottom: 35px; 
+            border-left: 6px solid var(--accent); 
+        }
+
+        .vision-box h2 { 
+            color: var(--accent); 
+            margin-bottom: 15px; 
+            letter-spacing: 1px; 
+        }
+
+        .vision-box p { 
+            font-size: 0.95rem; 
+            line-height: 1.8; 
+            color: #bbb; 
+            text-align: justify; 
+        }
+
+        .tech-details { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 20px; 
+            margin-top: 25px; 
+            border-top: 1px solid #333; 
+            padding-top: 25px; 
+        }
+
+        .tech-card { 
+            font-size: 0.85rem; 
+            line-height: 1.6; 
+            color: #999; 
+        }
+
+        .tech-card b { 
+            color: var(--accent); 
+            display: block; 
+            margin-bottom: 8px; 
+            text-transform: uppercase; 
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        /* ARAMA VE SAYI BİLGİSİ */
+        .search-container { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 10px; 
+        }
+
+        input { 
+            flex: 1; 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px solid #333; 
+            background: #000; 
+            color: #fff; 
+            outline: none; 
+            font-size: 1rem;
+        }
+
+        input:focus { 
+            border-color: var(--accent); 
+        }
+
+        button.main-btn { 
+            padding: 15px 40px; 
+            background: var(--accent); 
+            color: #000; 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button.main-btn:hover { 
+            filter: brightness(1.1); 
+            transform: translateY(-2px); 
+        }
+
+        .result-count { 
+            color: var(--accent); 
+            font-size: 0.8rem; 
+            margin-bottom: 15px; 
+            display: none; 
+            font-family: 'Fira Code'; 
+        }
+
+        /* ÖZET LİSTE TABLOSU */
+        .summary-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: var(--card); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            margin-bottom: 30px; 
+            display: none; 
+            border: 1px solid var(--border); 
+        }
+
+        .summary-table th, .summary-table td { 
+            padding: 14px; 
+            text-align: left; 
+            border-bottom: 1px solid #1a1a1a; 
+        }
+
+        .summary-table th { 
+            background: #1a1a1a; 
+            font-size: 0.7rem; 
+            color: #777; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+        .summary-table tr:hover { 
+            background: #181818; 
+        }
+
+        /* SONUÇ KARTLARI */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .card { 
+            background: var(--card); 
+            padding: 25px; 
+            border-radius: 15px; 
+            border: 1px solid var(--border); 
+            display: flex; 
+            flex-direction: column; 
+            transition: 0.3s; 
+            position: relative; 
+        }
+
+        .card:hover { 
+            border-color: var(--accent); 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4); 
+        }
+
+        .data-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+            background: #0c0c0c; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            border: 1px dotted #333; 
+        }
+
+        .d-item { 
+            font-size: 0.75rem; 
+            color: #666; 
+        }
+
+        .d-item b { 
+            color: #eee; 
+        }
+
+        .xai-note { 
+            background: rgba(255,215,0,0.05); 
+            padding: 12px; 
+            border-radius: 6px; 
+            border-left: 3px solid var(--accent); 
+            font-size: 0.8rem; 
+            margin-top: auto; 
+            line-height: 1.5;
+            color: #ddd;
+        }
+
+        /* SAYFALAMA */
+        .pagination { 
+            display: flex; 
+            justify-content: center; 
+            gap: 8px; 
+            margin: 40px 0; 
+        }
+
+        .pagination button { 
+            padding: 10px 15px; 
+            background: #1a1a1a; 
+            border: 1px solid #333; 
+            color: #888; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            transition: 0.2s; 
+        }
+
+        .pagination button.active { 
+            background: var(--accent); 
+            color: #000; 
+            font-weight: bold; 
+            border-color: var(--accent); 
+        }
+
+        .loader { 
+            border: 4px solid #222; 
+            border-top: 4px solid var(--accent); 
+            border-radius: 50%; 
+            width: 40px; 
+            height: 40px; 
+            animation: spin 1s linear infinite; 
+            display: none; 
+            margin: 20px auto; 
+        }
+
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- İstatistik Paneli -->
+    <div class="stats-bar">
+        <div class="stat-item">📁 Arşivlenen Veri: <b id="st-db">0</b></div>
+        <div class="stat-item">🔍 Algoritmik Analizler: <b id="st-search">0</b></div>
+        <div class="stat-item">🚀 Skorlanan Referanslar: <b id="st-click">0</b></div>
+    </div>
+
+    <!-- Başlık Alanı -->
+    <header style="text-align:center; margin-bottom: 30px;">
+        <h1 style="color:var(--accent); letter-spacing: 5px; margin:0; font-size: 2.2rem;">X-DISCOVERY ANALYTICS</h1>
+        <p style="color:#555; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;">Mühendislik Odaklı Yazılım Stabilite ve Keşif Terminali</p>
+    </header>
+
+    <!-- Vizyon ve Algoritma Bilgisi -->
+    <div class="vision-box">
+        <h2>🛠️ Metodoloji: Çok Kriterli Karar Analizi (MCDA)</h2>
+        <p>
+            X-Discovery AI, geleneksel "popülerlik odaklı" arama motorlarının aksine, GitHub ekosistemini <b>mühendislik metrikleri</b> üzerinden analiz eder. 
+            Sistem, ham yıldız sayısının yarattığı yanılsamayı bertaraf etmek için projeleri; topluluk desteği (fork/issue dengesi), kodun güncelliği (zaman duyarlı bozulma) ve sürdürülebilirlik endeksleri üzerinden puanlar. 
+            Böylece geliştiricilere sadece "popüler" olanı değil, "sağlıklı" olan teknolojiyi sunar.
+        </p>
+        <div class="tech-details">
+            <div class="tech-card">
+                <b>📊 Hibrit AI Skorlama Modeli</b>
+                Final Skor; Popülerlik (%40) ve Stabilite (%60) ağırlıklarının toplamının, dinamik zaman aşımı katsayısıyla (Time Decay) normalize edilmesiyle hesaplanır.
+            </div>
+            <div class="tech-card">
+                <b>💎 Stabilite Endeksi</b>
+                Yalnızca yıldızlara bakılmaz. Fork sayısı ile Açık Hata (Issue) hacmi arasındaki matematiksel korelasyon incelenerek projenin "bakım kalitesi" % olarak ölçülür.
+            </div>
+            <div class="tech-card">
+                <b>⏱️ Zaman Duyarlı Bozulma (Decay)</b>
+                Yazılımda "teknik borç" ve "eskime" kritiktir. 6 ayı geçen durağanlıkta %50, 1 yılı aşan hareketsizlikte %90 puan cezası uygulanarak güncel olmayan yapılar elenir.
+            </div>
+            <div class="tech-card">
+                <b>⚙️ Veri Sınıflandırma</b>
+                Analiz edilen her repo, skoruna göre **ELİT** (Kritik sistemlere uygun), **STABİL** (Genel kullanım) veya **RİSKLİ** (Deneysel/Terk edilmiş) olarak etiketlenir.
+            </div>
+        </div>
+    </div>
+
+    <!-- Arama Bölümü -->
+    <div class="search-container">
+        <input type="text" id="keyword" placeholder="Analiz edilecek teknoloji veya kütüphane ismini girin...">
+        <button class="main-btn" onclick="performSearch(1)">ANALİZİ BAŞLAT</button>
+    </div>
+    <div id="result-info" class="result-count"></div>
+
+    <!-- Yükleniyor Simgesi -->
+    <div id="loader" class="loader"></div>
+
+    <!-- Özet Tablo -->
+    <table class="summary-table" id="summary-table">
+        <thead>
+            <tr>
+                <th>Proje Mimarisi</th>
+                <th>Stabilite %</th>
+                <th>Mühendislik Skoru</th>
+                <th>Durum Sınıfı</th>
+                <th>Operasyon</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <!-- Sonuç Kartları -->
+    <div id="results-grid" class="grid"></div>
+
+    <!-- Sayfalama -->
+    <div id="pagination-box" class="pagination"></div>
+</div>
+
+<script>
+    // İstatistikleri Sunucudan Çekme
+    async function updateStats() {
+        try {
+            const r = await fetch('/get_stats');
+            const d = await r.json();
+            document.getElementById('st-db').innerText = d.db_total;
+            document.getElementById('st-search').innerText = d.searches;
+            document.getElementById('st-click').innerText = d.clicks;
+        } catch(e) { console.log("Stats error"); }
+    }
+    window.onload = updateStats;
+
+    // Arama Fonksiyonu
+    async function performSearch(page) {
+        const kw = document.getElementById('keyword').value;
+        if(!kw) return;
+        
+        document.getElementById('loader').style.display = "block";
+        document.getElementById('summary-table').style.display = "none";
+        document.getElementById('results-grid').innerHTML = "";
+
+        try {
+            const res = await fetch('/search', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({keyword: kw, page: page})
+            });
+            const data = await res.json();
+            document.getElementById('loader').style.display = "none";
+
+            if(data.results && data.results.length > 0) {
+                const info = document.getElementById('result-info');
+                info.style.display = "block";
+                info.innerText = `🔍 Toplam ${data.total_count.toLocaleString()} havuz analiz edildi. Sayfa: ${data.current_page}`;
+                
+                document.getElementById('summary-table').style.display = "table";
+
+                // Tablo İçeriği
+                document.getElementById('table-body').innerHTML = data.results.map(r => `
+                    <tr>
+                        <td><b>${r.name}</b><br><small style="color:#555">Maintainer: @${r.owner}</small></td>
+                        <td style="color:#00ff00; font-family:'Fira Code'">%${r.quality}</td>
+                        <td style="color:var(--accent); font-weight:bold;">${r.score}</td>
+                        <td><span style="font-size:10px; background:#222; padding:4px 10px; border-radius:4px; color:#fff;">${r.tag}</span></td>
+                        <td><button onclick="visitRepo('${r.url}','${r.name}',${r.score})" style="padding:6px 14px; font-size:10px; background:#333; color:#fff; border:none; border-radius:4px; cursor:pointer;">İncele →</button></td>
+                    </tr>
+                `).join('');
+
+                // Kart İçerikleri
+                document.getElementById('results-grid').innerHTML = data.results.map(r => `
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; font-size:10px;">
+                            <span style="color:var(--accent); font-weight:bold;">Sınıf: ${r.tag}</span>
+                            <span style="color:#ffd700;">⭐ ${r.stars.toLocaleString()}</span>
+                        </div>
+                        <h3 style="margin:12px 0; font-size:1.1rem; color:#fff; letter-spacing:0.5px;">${r.name}</h3>
+                        <p style="color:#777; font-size:0.8rem; line-height:1.5; margin-bottom:15px; height:42px; overflow:hidden;">${r.description}</p>
+                        
+                        <div class="data-grid">
+                            <div class="d-item">Yayın: <b>${r.created_date}</b></div>
+                            <div class="d-item">Son Push: <b>${r.pushed_date}</b></div>
+                            <div class="d-item">Fork: <b>${r.forks.toLocaleString()}</b></div>
+                            <div class="d-item">Issue: <b>${r.issues}</b></div>
+                            <div class="d-item">Dinamizm: <b>${r.explanation}</b></div>
+                            <div class="d-item">Kalite Oranı: <b>%${r.quality}</b></div>
+                        </div>
+
+                        <div class="xai-note">
+                            <b>📋 ANALİTİK ÖZET:</b><br>
+                            Proje, topluluk etkileşimi ve bakım hızı açısından ${r.tag.toLowerCase()} kategorisindedir. Skorlama; stabilite endeksi temel alınarak yapılmıştır.
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:15px; border-top:1px solid #222;">
+                            <div>
+                                <small style="display:block; color:#555; font-size:9px; text-transform:uppercase; letter-spacing:1px;">Global AI Skor</small>
+                                <span style="font-size:1.8rem; font-weight:bold; color:#00ff00; font-family:'Fira Code'">${r.score}</span>
+                            </div>
+                            <button onclick="visitRepo('${r.url}','${r.name}',${r.score})" style="padding:12px 25px; background:var(--accent); color:#000; font-weight:bold; border:none; border-radius:5px; cursor:pointer; text-transform:uppercase; font-size:11px;">Kaynağa Git</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Sayfalama Kontrolleri
+                let pgHTML = "";
+                for(let i=1; i<=data.pages; i++) {
+                    pgHTML += `<button onclick="performSearch(${i})" class="${i==data.current_page?'active':''}">${i}</button>`;
+                }
+                document.getElementById('pagination-box').innerHTML = pgHTML;
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                updateStats();
+            }
+        } catch(e) {
+            console.error(e);
+            document.getElementById('loader').style.display = "none";
+        }
+    }
+
+    // Projeye Git ve İstatistik Güncelle
+    async function visitRepo(url, name, score) {
+        await fetch('/track_discovery', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: name, score: score})
+        });
+        updateStats();
+        window.open(url, '_blank');
+    }
+</script>
+</body>
+</html>
