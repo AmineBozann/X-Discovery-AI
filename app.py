@@ -31,13 +31,9 @@ def init_db():
 
 init_db()
 
-# --- AKADEMİK ANALİZ MODÜLLERİ (HOCA MADDELERİ) ---
+# --- AKADEMİK ANALİZ MODÜLLERİ ---
 
 def run_sensitivity_analysis(repo):
-    """
-    Hoca Madde 4: Matematiksel Ağırlık Optimizasyonu (Sensitivity Analysis)
-    Ağırlık katsayıları değiştiğinde skorun ne kadar kararlı kaldığını ölçer.
-    """
     stars = repo.get('stargazers_count', 0)
     forks = repo.get('forks_count', 0)
     issues = repo.get('open_issues_count', 0)
@@ -45,25 +41,16 @@ def run_sensitivity_analysis(repo):
     pop_base = (math.log10(stars + 1) * 20) + (math.log10(forks + 1) * 10)
     qual_base = (forks / (forks + issues) * 100) if (forks + issues) > 0 else 0
     
-    # Farklı ağırlık senaryoları (Popülerlik Ağırlığı: 0.2, 0.4, 0.6, 0.8)
     scenarios = []
     for w in [0.2, 0.4, 0.6, 0.8]:
         s = (pop_base * w) + (qual_base * (1 - w))
         scenarios.append(s)
     
-    # Standart sapma düşükse, seçtiğimiz 0.4 ağırlığı 'Robust' (Güçlü) kabul edilir.
     return round(statistics.stdev(scenarios), 2) if len(scenarios) > 1 else 0
 
 def run_academic_validation(results):
-    """
-    Hoca Madde 2: Precision/Recall Benzeri Doğrulama
-    Sektörel 'Altın Standart'a (50k+ star & aktif) göre modelin başarı oranını ölçer.
-    """
     if not results: return {"precision": 0, "recall": 0}
-    
-    # Altın Standart: Gerçekten Elit olması gerekenler (Nesnel Kriter)
     ground_truth = [r for r in results if r['stars'] > 30000 and r['quality'] > 50]
-    # Modelimizin Elit dedikleri
     model_prediction = [r for r in results if r['tag'] == "ELİT"]
     
     tp = len([r for r in model_prediction if r in ground_truth])
@@ -75,7 +62,7 @@ def run_academic_validation(results):
     
     return {"precision": round(precision, 2), "recall": round(recall, 2)}
 
-# --- MEVCUT SKORLAMA (DOKUNULMADI) ---
+# --- GÜNCEL SKORLAMA (ÇARPIMSAL SÖNÜMLEME) ---
 
 def advanced_scoring(repo):
     stars = repo.get('stargazers_count', 0)
@@ -93,16 +80,16 @@ def advanced_scoring(repo):
     denominator = forks + open_issues
     quality_index = (forks / denominator * 100) if denominator > 0 else 0
     
+    # Matematiksel olarak düzeltilmiş zaman sönümleme (Çarpanlı)
     inactivity_days = (now - push_date).days
-    decay_multiplier = 1.0
-    if inactivity_days > 365: 
-        decay_multiplier = 0.1
-    elif inactivity_days > 180: 
+    if inactivity_days <= 30:
+        decay_multiplier = 1.0
+    elif inactivity_days <= 180:
         decay_multiplier = 0.5
+    else:
+        decay_multiplier = 0.1
 
     final_score = round(((popularity_score * 0.4) + (quality_index * 0.6)) * decay_multiplier, 2)
-    
-    # Duyarlılık Analizi entegrasyonu
     dev_index = run_sensitivity_analysis(repo)
 
     return {
@@ -112,7 +99,7 @@ def advanced_scoring(repo):
         "pushed_date": pushed_at[:10],
         "created_date": repo.get('created_at', "")[:10],
         "tag": "ELİT" if final_score > 65 else ("STABİL" if final_score > 35 else "RİSKLİ"),
-        "sensitivity": dev_index # Hoca Madde 4 ispatı
+        "sensitivity": dev_index
     }
 
 @app.route('/')
@@ -131,15 +118,14 @@ def search():
 
     conn = get_db_connection()
     try:
-        # ÖNBELLEK KONTROLÜ
         cache_hit = conn.execute("SELECT data FROM cache WHERE keyword=?", (keyword,)).fetchone()
         
         if cache_hit:
             full_pool = json.loads(cache_hit['data'])
             all_results = full_pool['all_results']
-            validation = run_academic_validation(all_results) # Hoca Madde 2
+            validation = run_academic_validation(all_results)
+            total_found_github = full_pool['total_count']
         else:
-            # YENİ ARAMA
             all_analyzed_results = []
             total_found_github = 0
             headers = {'Accept': 'application/vnd.github.v3+json', 'User-Agent': 'Mozilla/5.0'}
@@ -175,7 +161,7 @@ def search():
                     })
 
             all_analyzed_results.sort(key=lambda x: x['score'], reverse=True)
-            validation = run_academic_validation(all_analyzed_results) # Hoca Madde 2
+            validation = run_academic_validation(all_analyzed_results)
             
             cache_save = {"all_results": all_analyzed_results, "total_count": total_found_github}
             conn.execute("INSERT OR REPLACE INTO cache (keyword, data, timestamp) VALUES (?, ?, ?)",
@@ -183,20 +169,18 @@ def search():
             conn.execute("UPDATE global_stats SET value = value + 1 WHERE key = 'total_searches'")
             conn.commit()
             all_results = all_analyzed_results
-            total_found_github = total_found_github
 
         start = (requested_page - 1) * per_page
         return jsonify({
             "results": all_results[start:start+per_page],
-            "total_count": total_found_github if not cache_hit else full_pool['total_count'],
+            "total_count": total_found_github,
             "pages": math.ceil(len(all_results) / per_page),
             "current_page": requested_page,
-            "academic_metrics": validation # Hocaya ispat: Precision/Recall verisi
+            "academic_metrics": validation
         })
     finally:
         conn.close()
 
-# DİĞER FONKSİYONLAR (STATS, TRACK) DOKUNULMADI
 @app.route('/get_stats')
 def get_stats():
     conn = get_db_connection()
