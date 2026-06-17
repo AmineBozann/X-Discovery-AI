@@ -159,4 +159,10 @@ Computer Engineer
 
 GitHub: https://github.com/AmineBozann
 
-LinkedIn: (Add your LinkedIn profile)
+LinkedIn: (www.linkedin.com/in/amine-bozan)
+
+## Academic Paper
+
+The academic paper associated with this project can be found in:
+
+/ [text](../../bitirme/Elsevier_Rapor_Final10haziran.pdf)
