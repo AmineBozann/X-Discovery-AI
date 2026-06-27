@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>X-Discovery AI | Mühendislik Analiz Terminali</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+      content="AI-powered GitHub repository discovery platform based on Multi-Criteria Decision Analysis (MCDA).">
+
+<meta name="author"
+      content="Amine Bozan">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -11,7 +18,7 @@
             --card: #141414; 
             --border: #222; 
             --academic: #2980b9;
-        }
+        } 
 
         body { 
             background: var(--bg); 
@@ -389,7 +396,9 @@
             document.getElementById('st-click').innerText = d.clicks;
         } catch(e) { console.log("Stats error"); }
     }
-    window.onload = updateStats;
+    window.onload = () => {
+    updateStats();
+};
 
     // Arama Fonksiyonu
     async function performSearch(page) {
@@ -492,6 +501,11 @@
         updateStats();
         window.open(url, '_blank');
     }
+    document.getElementById("keyword").addEventListener("keypress", function(e){
+    if(e.key==="Enter"){
+        performSearch(1);
+    }
+});
 </script>
 </body>
 </html>

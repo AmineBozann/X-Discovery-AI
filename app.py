@@ -5,7 +5,7 @@ import sqlite3
 import requests
 import statistics
 from flask import Flask, jsonify, render_template, request
-print("APP DOSYASI YÜKLENDİ")
+
 app = Flask(__name__)
 DB_PATH = 'database.db'
 
@@ -208,14 +208,3 @@ def track():
 if __name__ == "__main__":
     print("X-Discovery AI SERVER STARTING...")
     app.run(host="0.0.0.0", port=5001, debug=True)
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return "X-Discovery AI WORKING"
-
-if __name__ == "__main__":
-    print("SERVER STARTED")
-    app.run(port=5001, debug=True)
