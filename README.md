@@ -1,3 +1,16 @@
+
+
+![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)
+
+![Flask](https://img.shields.io/badge/Flask-3.0-black?logo=flask)
+
+![License](https://img.shields.io/badge/License-MIT-green)
+
+![Version](https://img.shields.io/badge/Version-v1.0.0-orange)
+
+![Render](https://img.shields.io/badge/Render-Live-success)
+
+![Status](https://img.shields.io/badge/Status-Stable-brightgreen)
 # 🚀 X-Discovery AI
 
 ### MCDA-Based Decision Support System for GitHub Repository Discovery
