@@ -1,4 +1,9 @@
-# X-Discovery AI
+# 🚀 X-Discovery AI
+
+### MCDA-Based Decision Support System for GitHub Repository Discovery
+
+> Graduation Project | Computer Engineering | Flask | Python | GitHub API | Explainable AI
+
 
 ## MCDA-Based Decision Support System for Open-Source Software Discovery
 
@@ -150,7 +155,17 @@ This project was developed as a graduation project in the Department of Computer
 The study investigates how Multi-Criteria Decision Analysis and Explainable AI concepts can be integrated into open-source software discovery and evaluation processes.
 
 ---
+## 🔗 Live Demo
 
+https://x-discovery-ai.onrender.com
+
+## 📄 Academic Paper
+
+Coming Soon
+
+## 💻 Source Code
+
+https://github.com/AmineBozann/X-Discovery-AI
 ## Author
 
 Amine Bozan
