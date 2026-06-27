@@ -179,11 +179,7 @@ Coming Soon
 ## 💻 Source Code
 
 https://github.com/AmineBozann/X-Discovery-AI
-## Author
 
-Amine Bozan
-
-Computer Engineer
 
 GitHub: https://github.com/AmineBozann
 
@@ -194,3 +190,37 @@ LinkedIn: (www.linkedin.com/in/amine-bozan)
 The academic paper associated with this project can be found in:
 
 / [text](../../bitirme/Elsevier_Rapor_Final10haziran.pdf)
+
+Roadmap
+
+☑ GitHub API
+
+☑ MCDA
+
+☑ Explainable AI
+
+☑ Repository Ranking
+
+☑ Academic Validation
+
+☐ Machine Learning
+
+☐ Docker
+
+☐ PostgreSQL
+
+☐ Multi-language Support
+
+## Citation
+
+If you use this project in academic work please cite
+
+
+X-Discovery AI
+
+2026
+## Author
+
+Amine Bozan
+
+Computer Engineer
